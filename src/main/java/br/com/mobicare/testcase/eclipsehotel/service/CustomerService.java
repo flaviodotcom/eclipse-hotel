@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,9 @@ public class CustomerService {
 
     @Autowired
     private CustomerRepository customerRepository;
+
+    @Autowired
+    private ReservationService reservationService;
 
     public List<Customer> findAll() {
         logger.info("Procurando por todos os clientes");
@@ -32,8 +36,15 @@ public class CustomerService {
         return customerRepository.save(customer);
     }
 
-    public void deleteById(Long id) {
+    /**
+     * Método que exclui um cliente, incluindo suas associações na tabela reservations.
+     * Ou seja, todas reservas com esse cliente registrado serão excluidas.
+     * @param id id do registro a ser deletado.
+     */
+    @Transactional
+    public void delete(Long id) {
         logger.info("Excluindo as informações do cliente de id " + id);
+        reservationService.deleteByCustomerId(id);
         customerRepository.deleteById(id);
     }
 }

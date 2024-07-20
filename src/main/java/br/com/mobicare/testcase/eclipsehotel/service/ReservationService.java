@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,6 +25,16 @@ public class ReservationService {
     public Reservation createReservation(Reservation reservation) {
         logger.info("Criando reserva com status " + reservation.getStatus());
         return reservationRepository.save(reservation);
+    }
+
+    @Transactional
+    public void deleteByRoomId(Long roomId) {
+        reservationRepository.deleteByRoomId(roomId);
+    }
+
+    @Transactional
+    public void deleteByCustomerId(Long customerId) {
+        reservationRepository.deleteByCustomerId(customerId);
     }
 
     public Reservation endReservation(Long id) {

@@ -14,4 +14,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Query(value = "SELECT * FROM \"reservations\" r WHERE r.status = reservation_status_from_text(:status)", nativeQuery = true)
     List<Reservation> findByStatus(@Param("status") String status);
 
+    void deleteByRoomId(Long roomId);
+
+    void deleteByCustomerId(Long customerId);
 }
