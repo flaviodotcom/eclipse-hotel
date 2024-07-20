@@ -1,5 +1,5 @@
 -- Criação da tabela customers
-CREATE TABLE IF NOT EXISTS customers
+CREATE TABLE customers
 (
     id    SERIAL PRIMARY KEY,
     name  VARCHAR(255)        NOT NULL,
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS customers
 );
 
 -- Criação da tabela rooms
-CREATE TABLE IF NOT EXISTS rooms
+CREATE TABLE rooms
 (
     id    SERIAL PRIMARY KEY,
     type  VARCHAR(255)   NOT NULL,
@@ -17,20 +17,15 @@ CREATE TABLE IF NOT EXISTS rooms
 );
 
 -- Criação dos enums de status
-DO $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'reservation_status') THEN
 CREATE TYPE reservation_status AS ENUM ('SCHEDULED', 'IN_USE', 'ABSENCE', 'FINISHED', 'CANCELED');
-END IF;
-END$$;
 
 -- Criação da tabela reservations
-CREATE TABLE IF NOT EXISTS reservations
+CREATE TABLE reservations
 (
     id             SERIAL PRIMARY KEY,
     customer_id    INT REFERENCES customers (id),
     room_id        INT REFERENCES rooms (id),
-    checkin  DATE               NOT NULL,
-    checkout DATE               NOT NULL,
+    checkin        DATE               NOT NULL,
+    checkout       DATE               NOT NULL,
     status         reservation_status NOT NULL
 );

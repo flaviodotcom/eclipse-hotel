@@ -1,1 +1,1 @@
-CREATE DATABASE IF NOT EXISTS eclipse_hotel;
+CREATE DATABASE eclipse_hotel;
