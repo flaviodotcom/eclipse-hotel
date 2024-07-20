@@ -23,6 +23,11 @@ public class ReservationController {
         return ResponseEntity.ok(novaReserva);
     }
 
+    /**
+     * Atualiza uma reserva.
+     * Não permite alterar reserva caso status seja ABSENCE, CANCELED ou FINISHED.
+     * @return status 200 OK.
+     */
     @PutMapping("/{id}/end")
     public ResponseEntity<Reservation> endReservation(@PathVariable Long id) {
         Reservation reservaFinalizada = reservationService.endReservation(id);
